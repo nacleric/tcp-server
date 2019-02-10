@@ -1,0 +1,16 @@
+slice declaration:
+-does not allocate memory. S is nil
+-better if you dont know the size of the slice
+var s []int 
+
+shorthand:
+-allocates memory and elements will be set to 0 
+-better if u know the size
+s := make([]int, 0) 
+
+>slice := make([]int, 2, 5)
+length: 2 capacity: 5 content: [0 0]
+
+
+TCP sends data in bytes
+server needs to reconstruct bytes
