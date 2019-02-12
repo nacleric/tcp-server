@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"net"
+	"os"
 )
 
 //type User struct { // might put this into its own file
@@ -21,21 +23,25 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	//defer conn.Close()
+	defer conn.Close()
 
 	// Handles the connection
 	// Loop will exit when connection fails
 	for conn != nil {
+
 		// grabs user input
-		var msg string
-		fmt.Scanln(&msg)
+		fmt.Print("Enter Message: ")
+		reader := bufio.NewReader(os.Stdin)
+		msg, _ := reader.ReadString('\n')
 
 		//go routine handles messages being sent
 		go func(m string, c net.Conn) {
 			// converts string into a byteslice
 			// sends bytes over tcp
-			buf := []byte(m)
+			buf := []byte(string(m))
+			fmt.Println("sending:", buf, "string:", string(buf))
 			c.Write(buf)
 		}(msg, conn)
+
 	}
 }

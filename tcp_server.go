@@ -30,11 +30,11 @@ func main() {
 		// Handle the connection in a new goroutine.
 		// The loop then returns to accepting, so that
 		// multiple connections may be served concurrently.
-		// reads and echoes messages
+		// This func reads and echoes messages
 		go func(c net.Conn) {
 			for {
 				buf := make([]byte, 0, 4096) // big buffer
-				tmp := make([]byte, 2048)
+				tmp := make([]byte, 64)
 
 				incoming, err := c.Read(tmp)
 				if err != nil {
@@ -43,8 +43,8 @@ func main() {
 				}
 				// Reconstructs bytes into a string
 				buf = append(buf, tmp[:incoming]...)
-				msg := string(buf)
-				fmt.Println("message:", msg)
+				//msg := string(buf)
+				fmt.Println("message:", string(buf))
 
 			}
 		}(conn)

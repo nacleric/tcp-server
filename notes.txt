@@ -1,16 +1,47 @@
+Notes for self:
+
+
 slice declaration:
 -does not allocate memory. S is nil
 -better if you dont know the size of the slice
 var s []int 
+
 
 shorthand:
 -allocates memory and elements will be set to 0 
 -better if u know the size
 s := make([]int, 0) 
 
+
 >slice := make([]int, 2, 5)
 length: 2 capacity: 5 content: [0 0]
 
 
 TCP sends data in bytes
-server needs to reconstruct bytes
+server needs to reconstruct bytes into w/e format u need it in
+
+https://golang.org/pkg/net/#Conn
+https://golang.org/pkg/bytes/
+https://golang.org/pkg/io/
+
+https://groups.google.com/forum/#!topic/golang-nuts/ZvvQfhPvXtk
+
+io defines interfaces that handle streams of bytes (Reader, Writer, etc...) as well as functions that work generically with types implement these interfaces (eg: io.Copy)
+os defines types and functions that represent operating system objects/functionality at a low level that is portable across all go implementations.
+*os.File is a type that implements io.Reader, and io.Writer (among others) which streams bytes to or from a file on disk
+It is useful if you don't want to read the whole file into memory, or are using io.Copy (or some other method) to stream data to/from the file
+It has the downside of being a lower level construct, meaning data must often be processed in loops (with error checks on each iteration), and that it must be manually managed (via Close())
+io/ioutil provides helper functions for some non-trivial file and io tasks
+ReadFile reads an entire file into memory (as a []byte) in a single call
+It automatically allocates a byte slice of the correct size (no need to Read + append in a loop)
+It automatically closes the file
+It returns the first error that prevented it from working (so you only need a single error check)
+bufio provides wrapper types for io.Reader and io.Writer that buffer the input / output to improve efficiency
+The net/http package already buffers data for you (using bufio itself) so you don't need this package for that
+If you are reading a file in one or a few large steps, you probably don't need it either
+buffered input and output add some extra concerns
+bufio.Scanner is a nice utility type to efficiently read independent lines of text from an io.Reader
+bytes provides helper functions and types for interacting with byte slices ([]byte)
+bytes.Reader turns a []byte into a io.Reader (as well as an io.Seeker to rewind)
+bytes.Buffer uses []bytes to implement a reader/writer, it is useful when you want to use code that takes an io.Writer, and store the results in memory for use later
+the strings package provides analogous behaviour for go strings
