@@ -4,4 +4,4 @@ type Config struct {
 	Port string
 }
 
-var C Config = Config{Port: ":2000"}
+var C = Config{Port: ":2000"}

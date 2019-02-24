@@ -34,7 +34,7 @@ func main() {
 		go func(c net.Conn) {
 			for {
 				buf := make([]byte, 0, 4096) // big buffer
-				tmp := make([]byte, 64)
+				tmp := make([]byte, 2048)
 
 				incoming, err := c.Read(tmp)
 				if err != nil {
@@ -44,7 +44,7 @@ func main() {
 				// Reconstructs bytes into a string
 				buf = append(buf, tmp[:incoming]...)
 				//msg := string(buf)
-				fmt.Println("message:", string(buf))
+				fmt.Printf("[echo] %s", string(buf))
 
 			}
 		}(conn)
