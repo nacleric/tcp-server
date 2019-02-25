@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
+	"net"
 )
 
 type Message struct {
 	username string
 	body     string
-	//date     time.Time
 }
 
 /*
@@ -28,4 +28,13 @@ func PrintBytes(b []byte) {
 	fmt.Println("[DEBUG]")
 	fmt.Println(b)
 	fmt.Println(string(b))
+}
+
+func HandleMessage(m *Message, c net.Conn) {
+	str := fmt.Sprintf("%s: %s", m.username, m.body)
+
+	// converts string into a byteslice
+	// sends bytes over tcp
+	buf := []byte(str)
+	c.Write(buf)
 }

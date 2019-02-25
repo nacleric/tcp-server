@@ -22,9 +22,9 @@ func main() {
 		// Wait for a connection.
 		conn, err := listener.Accept()
 		if err != nil {
-			log.Println(err)
+			log.Println("someone has disconnected")
 		} else {
-			fmt.Println("someone has connected")
+			log.Println("someone has connected")
 		}
 
 		// Handle the connection in a new goroutine.
@@ -39,7 +39,6 @@ func main() {
 				incoming, err := c.Read(tmp)
 				if err != nil {
 					log.Println(err)
-					break
 				}
 				// Reconstructs bytes into a string
 				buf = append(buf, tmp[:incoming]...)

@@ -28,7 +28,7 @@ func main() {
 	username, err := reader.ReadString('\n')
 	username = strings.TrimSuffix(username, "\n") //trims username from .ReadString
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	// Handles the connection
@@ -39,21 +39,13 @@ func main() {
 		// and assigns it to Message Struct
 		fmt.Print("Enter Message: ")
 		text, err := reader.ReadString('\n')
-		//text = strings.TrimSuffix(text, "\n") //trims text from .ReadString
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 		var msg = &Message{username: username, body: text}
 
 		// go routine handles messages being sent
-		go func(m *Message, c net.Conn) {
-			str := fmt.Sprintf("%s: %s", m.username, m.body)
-			// converts string into a byteslice
-			// sends bytes over tcp
-			buf := []byte(str)
-			c.Write(buf)
-
-		}(msg, conn)
+		go HandleMessage(msg, conn)
 
 	}
 }
