@@ -1,7 +1,7 @@
 package main
 
-type Config struct {
-	Port string
+type config struct {
+	port string
 }
 
-var C = Config{Port: ":2000"}
+var c = config{port: ":2000"}

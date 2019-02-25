@@ -12,7 +12,7 @@ func main() {
 	// net.Listen() creates the server
 	// Listen on TCP port 2000 on all available unicast and
 	// anycast IP addresses of the local system.
-	listener, err := net.Listen("tcp", C.Port) //C.Port is accessed in the config file
+	listener, err := net.Listen("tcp", c.port) // C.Port is accessed in the config file
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -34,7 +34,7 @@ func main() {
 		go func(c net.Conn) {
 			for {
 				buf := make([]byte, 0, 4096) // big buffer
-				tmp := make([]byte, 2048)
+				tmp := make([]byte, 2048)    // temporary buffer
 
 				incoming, err := c.Read(tmp)
 				if err != nil {
@@ -42,11 +42,11 @@ func main() {
 				}
 				// Reconstructs bytes into a string
 				buf = append(buf, tmp[:incoming]...)
-				//msg := string(buf)
 				fmt.Printf("[echo] %s", string(buf))
 
 			}
 		}(conn)
+
 		//conn.Close()
 	}
 }

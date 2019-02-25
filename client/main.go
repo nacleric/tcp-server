@@ -23,10 +23,11 @@ func main() {
 	defer conn.Close()
 
 	// Asks user to input their name
+	// .TrimSuffix deletes the newline from .ReadString('\n')
 	fmt.Print("Enter Username: ")
 	reader := bufio.NewReader(os.Stdin)
 	username, err := reader.ReadString('\n')
-	username = strings.TrimSuffix(username, "\n") //trims username from .ReadString
+	username = strings.TrimSuffix(username, "\n")
 	if err != nil {
 		log.Println(err)
 	}
@@ -42,10 +43,10 @@ func main() {
 		if err != nil {
 			log.Println(err)
 		}
-		var msg = &Message{username: username, body: text}
+		var msg = &message{username: username, body: text}
 
 		// go routine handles messages being sent
-		go HandleMessage(msg, conn)
+		go handleMessage(msg, conn)
 
 	}
 }
