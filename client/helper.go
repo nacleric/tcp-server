@@ -1,8 +1,6 @@
 package main
 
 import (
-	"bytes"
-	"encoding/gob"
 	"fmt"
 )
 
@@ -12,6 +10,7 @@ type Message struct {
 	//date     time.Time
 }
 
+/*
 //encodes Message and allows it to be passed over tcp
 func gobject(m *Message) {
 	var b bytes.Buffer
@@ -22,7 +21,7 @@ func gobject(m *Message) {
 	fmt.Println("encoded struct: ", b)
 
 }
-
+*/
 // Helper that displays what bytes are being sent
 func PrintBytes(b []byte) {
 	//fmt.Println("\n[DEBUG]", "byteOutput:", b, "string:", string(b))

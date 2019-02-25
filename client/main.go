@@ -6,6 +6,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -21,11 +22,11 @@ func main() {
 	}
 	defer conn.Close()
 
-	//READSTRING MIGHT BE THE PROBLEM
 	// Asks user to input their name
 	fmt.Print("Enter Username: ")
 	reader := bufio.NewReader(os.Stdin)
 	username, err := reader.ReadString('\n')
+	username = strings.TrimSuffix(username, "\n") //trims username from .ReadString
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -33,24 +34,23 @@ func main() {
 	// Handles the connection
 	// Loop will exit when connection fails
 	for conn != nil {
+
 		// grabs user input
+		// and assigns it to Message Struct
 		fmt.Print("Enter Message: ")
 		text, err := reader.ReadString('\n')
+		//text = strings.TrimSuffix(text, "\n") //trims text from .ReadString
 		if err != nil {
 			log.Fatal(err)
 		}
 		var msg = &Message{username: username, body: text}
 
-		//FIX THIS KEEPS ADDING NEWLINE
-		//go routine handles messages being sent
-		func(m *Message, c net.Conn) {
-			//str := fmt.Sprintf("%s: %s", m.username, m.body)
-			str := m.username + ": " + m.body
+		// go routine handles messages being sent
+		go func(m *Message, c net.Conn) {
+			str := fmt.Sprintf("%s: %s", m.username, m.body)
 			// converts string into a byteslice
 			// sends bytes over tcp
-			//buf := []byte(string(m))
 			buf := []byte(str)
-			PrintBytes(buf)
 			c.Write(buf)
 
 		}(msg, conn)
